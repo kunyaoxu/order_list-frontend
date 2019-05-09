@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container,
   Row,
   Col,
@@ -7,13 +7,25 @@ import { Container,
   PaginationLink
 } from 'reactstrap';
 import ProductCard from './ProductCard';
+import { callGetProductsApi } from 'reducers/products/actions';
+import { IAppReduxState } from 'reducers';
+import { useMappedState, useDispatch } from 'redux-react-hook';
 
 const ProductList: React.FC = () => {
+
+  const products = useMappedState((state: IAppReduxState) => state.products);
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    dispatch(callGetProductsApi());
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <div className="product_list">
       <Container>
         <Row>
-          <Col xs="12" sm="6">
+          {/* <Col xs="12" sm="6">
             <ProductCard
               name={"item 1"}
               description={"item 1 description"}
@@ -40,7 +52,19 @@ const ProductList: React.FC = () => {
               description={"item 4 description"}
               price={200}
             />
-          </Col>
+          </Col> */}
+          {products.map((product) => {
+            return (
+              <Col xs="12" sm="6">
+                <ProductCard
+                  key={product.id}
+                  name={product.name}
+                  description={product.description}
+                  price={product.price}
+                />
+              </Col>
+            );
+          })}
         </Row>
         <Row>
           <Col>
@@ -58,4 +82,4 @@ const ProductList: React.FC = () => {
   );
 }
 
-export default ProductList; 
+export default ProductList;
