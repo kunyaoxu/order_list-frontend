@@ -53,11 +53,10 @@ const ProductList: React.FC = () => {
               price={200}
             />
           </Col> */}
-          {products.map((product) => {
+          {products.map((product, index) => {
             return (
-              <Col xs="12" sm="6">
+              <Col xs="12" sm="6" key={product.id}>
                 <ProductCard
-                  key={product.id}
                   name={product.name}
                   description={product.description}
                   price={product.price}
