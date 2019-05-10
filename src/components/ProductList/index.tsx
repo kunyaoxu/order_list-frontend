@@ -1,20 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container,
   Row,
-  Col,
-  Pagination,
-  PaginationItem,
-  PaginationLink
+  Col
 } from 'reactstrap';
 import ProductCard from './ProductCard';
+import PaginationArea from './PaginationArea';
 import { callGetProductsApi } from 'reducers/products/actions';
 import { IAppReduxState } from 'reducers';
 import { useMappedState, useDispatch } from 'redux-react-hook';
+
+const DIVISOR = 4;
 
 const ProductList: React.FC = () => {
 
   const products = useMappedState((state: IAppReduxState) => state.products);
   const dispatch = useDispatch();
+
+  const [ currentIndex, setCurrentIndex ] = useState(1);
   
   useEffect(() => {
     dispatch(callGetProductsApi());
@@ -25,55 +27,38 @@ const ProductList: React.FC = () => {
     <div className="product_list">
       <Container>
         <Row>
-          {/* <Col xs="12" sm="6">
-            <ProductCard
-              name={"item 1"}
-              description={"item 1 description"}
-              price={200}
-            />
-          </Col>
-          <Col xs="12" sm="6">
-            <ProductCard
-              name={"item 2"}
-              description={"item 2 description"}
-              price={300}
-            />
-          </Col>
-          <Col xs="12" sm="6">
-            <ProductCard
-              name={"item 3"}
-              description={"item 3 description"}
-              price={500}
-            />
-          </Col>
-          <Col xs="12" sm="6">
-            <ProductCard
-              name={"item 4"}
-              description={"item 4 description"}
-              price={200}
-            />
-          </Col> */}
-          {products.map((product, index) => {
-            return (
-              <Col xs="12" sm="6" key={product.id}>
-                <ProductCard
-                  name={product.name}
-                  description={product.description}
-                  price={product.price}
-                />
-              </Col>
-            );
-          })}
+          {
+            products
+              .filter((e, index) =>
+                (index >= (DIVISOR * (currentIndex - 1))) &&
+                (index <= (DIVISOR * currentIndex - 1))
+              )
+              .map((product) => {
+              return (
+                <Col xs="12" sm="6" key={product.id}>
+                  <ProductCard
+                    name={product.name}
+                    description={product.description}
+                    price={product.price}
+                  />
+                </Col>
+              );
+            })
+          }
         </Row>
         <Row>
           <Col>
-            <Pagination>
-              <PaginationItem>
-                <PaginationLink href="#">
-                  1
-                </PaginationLink>
-              </PaginationItem>
-            </Pagination>
+            {
+              products.length > 0 ?
+                <PaginationArea
+                  resultCount={products.length}
+                  divisor={DIVISOR}
+                  activeIndex={currentIndex}
+                  onClick={setCurrentIndex}
+                />
+                :
+                <div>there is nothing ...</div>
+            }
           </Col>
         </Row>
       </Container>
