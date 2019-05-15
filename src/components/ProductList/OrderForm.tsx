@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { useMappedState, useDispatch } from 'redux-react-hook';
 import { IAppReduxState } from 'reducers';
 import { onInputChange, callPostOrdersApi } from 'reducers/orderform/actions';
@@ -71,7 +71,7 @@ const OrderForm: React.FC = () => {
           }
         />
       </FormGroup>
-      <Button>Submit</Button>
+      <Button disabled={formData.product_ids.length < 1}>Submit</Button>
     </Form>
   );
 }
