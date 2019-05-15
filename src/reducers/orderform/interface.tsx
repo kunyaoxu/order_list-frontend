@@ -1,4 +1,4 @@
-export interface IOrderFormData extends Object {
+export interface IOrderFormData {
   name: string;
   address: string;
   email: string;
