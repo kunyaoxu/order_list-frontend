@@ -1,11 +1,5 @@
-import { actionType } from './actions';
-
-export interface IOrderFormData {
-  name: string;
-  address: string;
-  email: string;
-  product_ids: Array<number>;
-}
+import { ActionType, ActionPayloadType } from './actions';
+import { IOrderFormData } from './interface'
 
 const initData: IOrderFormData = {
   name: '',
@@ -14,7 +8,7 @@ const initData: IOrderFormData = {
   product_ids: []
 }
 
-const orderform = (state: IOrderFormData = initData, action: { type: actionType, payload: any}): IOrderFormData => {
+const orderform = (state: IOrderFormData = initData, action: { type: ActionType, payload: ActionPayloadType}): IOrderFormData => {
   switch (action.type) {
     case 'TOGGLE_PRODUCT_CHECKBOX':
       let indexOf = state.product_ids.indexOf(action.payload.id);
@@ -25,6 +19,16 @@ const orderform = (state: IOrderFormData = initData, action: { type: actionType,
         ...state,
         product_ids: [...state.product_ids]
       };
+    case 'ON_INPUT_CHANGE':
+      const key = action.payload.key;
+      if (
+        'name' === key ||
+        'address' === key ||
+        'email' === key
+      ) {
+        state[key] = action.payload.value;
+      }
+      return state;
     default:
       return state;
   }
