@@ -11,7 +11,7 @@ interface IProps {
 const PaginationArea: React.FC<IProps> = (props) => {
   const returnItems = [];
   const maxNum = Math.ceil(props.resultCount / props.divisor);
-  console.log('maxNum ', maxNum)
+
   for (let i = 1; i <= maxNum; i++) {
     returnItems.push(
       <PaginationItem active={i === props.activeIndex} key={i} onClick={() => { props.onClick(i) }}>
