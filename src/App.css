@@ -6,3 +6,9 @@
 .product_card {
   margin: 16px 0;
 }
+
+.order_form {
+  background-color: #eeeeee;
+  padding: 32px;
+  border-radius: 5px;
+}

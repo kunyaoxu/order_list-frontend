@@ -5,7 +5,9 @@ import { Container,
 } from 'reactstrap';
 import ProductCard from './ProductCard';
 import PaginationArea from './PaginationArea';
+import OrderForm from './OrderForm';
 import { callGetProductsApi } from 'reducers/products/actions';
+import { toggleCheckbox } from 'reducers/orderform/actions'
 import { IAppReduxState } from 'reducers';
 import { useMappedState, useDispatch } from 'redux-react-hook';
 
@@ -14,6 +16,7 @@ const DIVISOR = 4;
 const ProductList: React.FC = () => {
 
   const products = useMappedState((state: IAppReduxState) => state.products);
+  const orderform = useMappedState((state: IAppReduxState) => state.orderform);
   const dispatch = useDispatch();
 
   const [ currentIndex, setCurrentIndex ] = useState(1);
@@ -22,7 +25,7 @@ const ProductList: React.FC = () => {
     dispatch(callGetProductsApi());
     // eslint-disable-next-line
   }, []);
-
+  
   return (
     <div className="product_list">
       <Container>
@@ -34,15 +37,17 @@ const ProductList: React.FC = () => {
                 (index <= (DIVISOR * currentIndex - 1))
               )
               .map((product) => {
-              return (
-                <Col xs="12" sm="6" key={product.id}>
-                  <ProductCard
-                    name={product.name}
-                    description={product.description}
-                    price={product.price}
-                  />
-                </Col>
-              );
+                return (
+                  <Col xs="12" sm="6" key={product.id}>
+                    <ProductCard
+                      name={product.name}
+                      description={product.description}
+                      price={product.price}
+                      onChange={() => {dispatch(toggleCheckbox(product.id))}}
+                      checked={orderform.product_ids.indexOf(product.id) !== -1}
+                    />
+                  </Col>
+                );
             })
           }
         </Row>
@@ -59,6 +64,11 @@ const ProductList: React.FC = () => {
                 :
                 <div>there is nothing ...</div>
             }
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <OrderForm/>
           </Col>
         </Row>
       </Container>
