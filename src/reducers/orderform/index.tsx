@@ -8,6 +8,8 @@ const initData: IOrderFormData = {
   product_ids: []
 }
 
+const resetInitData = JSON.stringify(initData);
+
 const orderform = (state: IOrderFormData = initData, action: { type: ActionType, payload: ActionPayloadType}): IOrderFormData => {
   switch (action.type) {
     case 'TOGGLE_PRODUCT_CHECKBOX':
@@ -28,6 +30,10 @@ const orderform = (state: IOrderFormData = initData, action: { type: ActionType,
       ) {
         state[key] = action.payload.value;
       }
+      return {...state};
+    case 'API_POST_ORDERS_SUCCESS':
+      alert('訂購成功 !');
+      state = JSON.parse(resetInitData);
       return state;
     default:
       return state;
