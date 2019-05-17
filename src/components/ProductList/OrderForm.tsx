@@ -16,10 +16,9 @@ const preventEnterSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
 }
 
 const OrderForm: React.FC = () => {
-  const formData = useMappedState((state: IAppReduxState) => state.orderform);
-  const name = useMappedState((state: IAppReduxState) => state.orderform.name);
-  const email = useMappedState((state: IAppReduxState) => state.orderform.email);
-  const address = useMappedState((state: IAppReduxState) => state.orderform.address);
+  const formData = useMappedState((state: IAppReduxState) => ({...state.orderform}));
+  const {name, email, address, product_ids} = formData;
+
   const dispatch = useDispatch();
   
   return (
@@ -77,7 +76,7 @@ const OrderForm: React.FC = () => {
           value={address}
         />
       </FormGroup>
-      <Button disabled={formData.product_ids.length < 1}>Submit</Button>
+      <Button disabled={product_ids.length < 1}>Submit</Button>
     </Form>
   );
 }
