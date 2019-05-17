@@ -16,9 +16,12 @@ const preventEnterSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
 }
 
 const OrderForm: React.FC = () => {
-  const formData = useMappedState((state: IAppReduxState) => state.orderform)
+  const formData = useMappedState((state: IAppReduxState) => state.orderform);
+  const name = useMappedState((state: IAppReduxState) => state.orderform.name);
+  const email = useMappedState((state: IAppReduxState) => state.orderform.email);
+  const address = useMappedState((state: IAppReduxState) => state.orderform.address);
   const dispatch = useDispatch();
-
+  
   return (
     <Form
       className="order_form"
@@ -42,6 +45,7 @@ const OrderForm: React.FC = () => {
               dispatch(onInputChange(onChangeWrap(e)));
             }
           }
+          value={name}
         />
       </FormGroup>
       <FormGroup>
@@ -56,6 +60,7 @@ const OrderForm: React.FC = () => {
               dispatch(onInputChange(onChangeWrap(e)));
             }
           }
+          value={email}
         />
       </FormGroup>
       <FormGroup>
@@ -69,6 +74,7 @@ const OrderForm: React.FC = () => {
               dispatch(onInputChange(onChangeWrap(e)));
             }
           }
+          value={address}
         />
       </FormGroup>
       <Button disabled={formData.product_ids.length < 1}>Submit</Button>
